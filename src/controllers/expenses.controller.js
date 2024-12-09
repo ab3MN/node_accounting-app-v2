@@ -2,8 +2,12 @@ const expensesServices = require('../services/expenses/expenses.services');
 const { isExpenseValid } = require('../untils/expenses');
 const { isUserExist } = require('../untils/users');
 
-const getExpenses = (_, res) => {
-  return res.status(200).json(expensesServices.getExpenses());
+const getExpenses = (req, res) => {
+  const { categories, userId, from, to } = req.query;
+
+  return res
+    .status(200)
+    .json(expensesServices.getExpenses(categories, userId, from, to));
 };
 
 const getExpenseById = (req, res) => {
@@ -49,10 +53,7 @@ const removeExpense = (req, res) => {
 const updateExpense = (req, res) => {
   const expenseId = Number(req.params.id);
 
-  if (
-    !isUserExist(+req.body.userId) ||
-    !expensesServices.getExpenseById(expenseId)
-  ) {
+  if (!expensesServices.getExpenseById(expenseId)) {
     return res.sendStatus(400);
   }
 

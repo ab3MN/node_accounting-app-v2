@@ -30,7 +30,31 @@ let expenses = [];
 
 let lastId = expenses.length;
 
-const getExpenses = () => expenses;
+const getExpenses = (categories, userId, from, to) => {
+  let filtredExpenses = [...expenses];
+
+  if (categories && Array.isArray(categories)) {
+    filtredExpenses = filtredExpenses.filter(({ category }) => {
+      return categories.includes(category);
+    });
+  } else if (userId) {
+    filtredExpenses = filtredExpenses((expense) => expense.userId === userId);
+  }
+
+  if (from) {
+    filtredExpenses = filtredExpenses.filter(
+      (expense) => new Date(expense.spentAt) >= new Date(from),
+    );
+  }
+
+  if (to) {
+    filtredExpenses = filtredExpenses.filter(
+      (expense) => new Date(expense.spentAt) <= new Date(to),
+    );
+  }
+
+  return filtredExpenses;
+};
 
 const getExpenseById = (expenseId) =>
   expenses.find(({ id }) => id === expenseId) || null;
