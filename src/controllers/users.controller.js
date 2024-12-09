@@ -9,18 +9,11 @@ const getUserById = (req, res) => {
 
   const userId = Number(id);
 
-  if (!userId || isNaN(userId)) {
+  if (isNaN(userId)) {
     return res.sendStatus(400);
   }
 
   const user = usersServices.getUserById(userId);
-
-  if (!user) {
-    res.sendStatus(404);
-
-    return;
-  }
-  res.send(user);
 
   return !user ? res.sendStatus(404) : res.status(200).json(user);
 };
@@ -28,7 +21,7 @@ const getUserById = (req, res) => {
 const saveUser = (req, res) => {
   const { name } = req.body;
 
-  if (!name || typeof name !== 'string') {
+  if (typeof name !== 'string') {
     return res.sendStatus(400);
   }
 
@@ -57,7 +50,7 @@ const updateUser = (req, res) => {
   const { name } = req.body;
   const userId = Number(id);
 
-  if (!userId || isNaN(userId) || typeof name !== 'string') {
+  if (isNaN(userId) || typeof name !== 'string') {
     return res.sendStatus(400);
   }
 

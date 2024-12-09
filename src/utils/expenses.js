@@ -1,7 +1,12 @@
 const isExpenseValid = (expense) => {
   const { title, amount, category, spentAt } = expense;
 
-  return !!(title && amount && category && spentAt);
+  return !!(
+    typeof title === 'string' &&
+    typeof amount === 'number' &&
+    typeof category === 'string' &&
+    typeof spentAt === 'string'
+  );
 };
 
 const getNewExpenseData = (expense, id) => {

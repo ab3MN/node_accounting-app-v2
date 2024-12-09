@@ -1,6 +1,6 @@
 const expensesServices = require('../services/expenses/expenses.services');
-const { isExpenseValid } = require('../untils/expenses');
-const { isUserExist } = require('../untils/users');
+const { isExpenseValid } = require('../utils/expenses');
+const { isUserExist } = require('../utils/users');
 
 const getExpenses = (req, res) => {
   const { categories, userId, from, to } = req.query;
@@ -15,8 +15,8 @@ const getExpenseById = (req, res) => {
 
   const expenseId = Number(id);
 
-  if (!expenseId || isNaN(expenseId)) {
-    res.sendStatus(400);
+  if (isNaN(expenseId)) {
+    return res.sendStatus(400);
   }
 
   const expense = expensesServices.getExpenseById(expenseId);
@@ -25,8 +25,8 @@ const getExpenseById = (req, res) => {
 };
 
 const saveExpense = (req, res) => {
-  if (!isExpenseValid(req.body) || !isUserExist(+req.body.userId)) {
-    return res.sendStatus(400);
+  if (!(isExpenseValid(req.body) && isUserExist(+req.body.userId))) {
+    return res.sendStatus(404);
   }
 
   const newExpense = expensesServices.saveExpense(req.body);
@@ -54,7 +54,7 @@ const updateExpense = (req, res) => {
   const expenseId = Number(req.params.id);
 
   if (!expensesServices.getExpenseById(expenseId)) {
-    return res.sendStatus(400);
+    return res.sendStatus(404);
   }
 
   const updatedExpense = expensesServices.updateExpense(expenseId, req.body);

@@ -10,7 +10,7 @@
  *
  */
 
-const { getNewExpenseData } = require('../../untils/expenses');
+const { getNewExpenseData } = require('../../utils/expenses');
 
 // const expenseData = {
 //   spentAt: '2022-10-19T11:01:43.462Z',

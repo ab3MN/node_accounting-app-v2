@@ -19,7 +19,7 @@ const saveUser = (name) => {
   return newUser;
 };
 
-const getUserById = (id) => getUsers().find((user) => user.id === id) || null;
+const getUserById = (id) => users.find((user) => user.id === id) || null;
 
 const updateUser = (id, name) => {
   const user = getUserById(id);
@@ -34,7 +34,7 @@ const updateUser = (id, name) => {
 };
 
 const removeUser = (userId) => {
-  users = getUsers().filter(({ id }) => id !== userId);
+  users = users.filter(({ id }) => id !== userId);
 };
 
 module.exports = {
