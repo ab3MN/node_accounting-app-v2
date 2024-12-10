@@ -1,11 +1,15 @@
-// const userData = {
-//   name: 'Homer Simpson',
-// };
+const userData = {
+  name: 'Homer Simpson',
+};
 
-// let users = Array.from({ length: 7 }, (_, id) => ({ id, ...userData }));
-let users = [];
+let users = Array.from({ length: 7 }, (_, id) => ({ id, ...userData }));
 
 let lastId = users.length;
+
+const resetUsers = () => {
+  users = [];
+  lastId = 0;
+};
 
 const getUsers = () => users;
 
@@ -43,4 +47,5 @@ module.exports = {
   getUserById,
   updateUser,
   removeUser,
+  resetUsers,
 };

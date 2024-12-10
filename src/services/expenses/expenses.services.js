@@ -12,45 +12,52 @@
 
 const { getNewExpenseData } = require('../../utils/expenses');
 
-// const expenseData = {
-//   spentAt: '2022-10-19T11:01:43.462Z',
-//   title: 'Buy a new laptop',
-//   amount: 999,
-//   category: 'Electronics',
-//   note: 'I need a new laptop',
-// };
+const expenseData = {
+  spentAt: '2022-10-19T11:01:43.462Z',
+  title: 'Buy a new laptop',
+  amount: 999,
+  category: 'Electronics',
+  note: 'I need a new laptop',
+};
 
-// let expenses = Array.from({ length: 6 }, (_, i) => ({
-//   ...expenseData,
-//   userId: i,
-//   id: i,
-// }));
-
-let expenses = [];
+let expenses = Array.from({ length: 6 }, (_, i) => ({
+  ...expenseData,
+  userId: 2,
+  id: i,
+}));
 
 let lastId = expenses.length;
+
+const resetExpenses = () => {
+  expenses = [];
+  lastId = 0;
+};
 
 const getExpenses = (categories, userId, from, to) => {
   let filtredExpenses = [...expenses];
 
-  if (categories && Array.isArray(categories)) {
+  if (categories) {
     filtredExpenses = filtredExpenses.filter(({ category }) => {
       return categories.includes(category);
     });
-  } else if (userId) {
-    filtredExpenses = filtredExpenses((expense) => expense.userId === userId);
+  }
+
+  if (!isNaN(+userId)) {
+    filtredExpenses = filtredExpenses.filter(
+      (expense) => expense.userId === +userId,
+    );
   }
 
   if (from) {
-    filtredExpenses = filtredExpenses.filter(
-      (expense) => new Date(expense.spentAt) >= new Date(from),
-    );
+    filtredExpenses = filtredExpenses.filter((expense) => {
+      return new Date(expense.spentAt) >= new Date(from);
+    });
   }
 
   if (to) {
-    filtredExpenses = filtredExpenses.filter(
-      (expense) => new Date(expense.spentAt) <= new Date(to),
-    );
+    filtredExpenses = filtredExpenses.filter((expense) => {
+      return new Date(expense.spentAt) <= new Date(to);
+    });
   }
 
   return filtredExpenses;
@@ -87,4 +94,5 @@ module.exports = {
   saveExpense,
   removeExpense,
   updateExpense,
+  resetExpenses,
 };

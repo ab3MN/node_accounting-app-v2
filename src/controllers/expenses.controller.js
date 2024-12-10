@@ -5,9 +5,15 @@ const { isUserExist } = require('../utils/users');
 const getExpenses = (req, res) => {
   const { categories, userId, from, to } = req.query;
 
+  let categoriesArray = categories;
+
+  if (categories) {
+    categoriesArray = Array.isArray(categories) ? categories : [categories];
+  }
+
   return res
     .status(200)
-    .json(expensesServices.getExpenses(categories, userId, from, to));
+    .json(expensesServices.getExpenses(categoriesArray, userId, from, to));
 };
 
 const getExpenseById = (req, res) => {
@@ -26,7 +32,7 @@ const getExpenseById = (req, res) => {
 
 const saveExpense = (req, res) => {
   if (!(isExpenseValid(req.body) && isUserExist(+req.body.userId))) {
-    return res.sendStatus(404);
+    return res.sendStatus(400);
   }
 
   const newExpense = expensesServices.saveExpense(req.body);
@@ -59,7 +65,7 @@ const updateExpense = (req, res) => {
 
   const updatedExpense = expensesServices.updateExpense(expenseId, req.body);
 
-  return res.status(201).json(updatedExpense);
+  return res.status(200).json(updatedExpense);
 };
 
 module.exports = {
